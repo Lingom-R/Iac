@@ -13,7 +13,7 @@ jobs:
     env:
       APP_ID: 931cc82382bcae800899a2d62ed18d57fb10f9affca78adb8a7d262f8e436839
       BRANCH_NAME: main
-      SCAN_ID: 346ba929524bf9ab182fd9ba3da9da792cf5f5a2db80c37df2b1c4343b89e0b7
+      SCAN_ID: 0940cc3d3fcaf0e83e7ab7fa678ab237ebe5d0b2cbe851db1dd50f699cb85fbf
       REQ_URL_MAP: "${{toJSON('{\"SL_RESULT_API_HOST\":\"https://slresultapi.securin.io/resultapi\"\
         ,\"SL_RESULTPARSER_API_HOST\":\"https://slresultparserapi.securin.io/resultparserapi\"\
         }')}}"
@@ -37,10 +37,10 @@ jobs:
         \ ) \ndocker login --username  $usrVal --password $usrPassword $usrPrxyUrl\
         \ \ndocker pull -q $usrImgTag \ndocker run -v ${{github.workspace}}:/src \
         \ --volume ${{github.workspace}}:/workdir -v /var/run/docker.sock:/var/run/docker.sock\
-        \ $usrImgTag -org_api_key ${{secrets.ORG_API_KEY}} -app_id ${{ env.APP_ID\
-        \ }} -scan_id ${{ env.SCAN_ID }} -branch_name ${{ env.BRANCH_NAME }} -req_url_map\
-        \ ${{ env.REQ_URL_MAP }} -tool_name github event:${{ github.event_name }}\
-        \  pr_number:${{ github.event.number }} -upload_log true"
+        \ $usrImgTag -api_key ${{secrets.ORG_API_KEY}} -wrkspc_id ${{secrets.WORKSPACE_ID}}\
+        \ -app_id ${{ env.APP_ID }} -scan_id ${{ env.SCAN_ID }} -branch_name ${{ env.BRANCH_NAME\
+        \ }} -req_url_map ${{ env.REQ_URL_MAP }} -tool_name github event:${{ github.event_name\
+        \ }}  pr_number:${{ github.event.number }} -upload_log true"
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v2
       with:
